@@ -1,0 +1,33 @@
+
+linux:Linux
+64bit:x86_64
+-64bit:i686
+
+# Chrome OS
+cros:X11; CrOS
+
+ubuntu:Ubuntu
+gentoo:Gentoo
+
+bsd:FreeBSD
+bsd:NetBSD
+bsd:OpenBSD
+64bit:amd64
+-64bit:i386
+arm:_arm_
+arm:_armv7
+
+chrome,-safari:Chrome/
+safari:Safari/
+firefox:Firefox/
+
+yabrowser,-chrome:YaBrowser/
+opera:Opera/
+konqueror:Konqueror/
+gnome:Epiphany/
+gnome:Galeon/
+links:Links
+
+maxthon,maxthon_cloud:Maxthon/4
+maxthon,-safari,-ie,-chrome:Maxthon/
+

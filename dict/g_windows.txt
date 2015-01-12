@@ -1,0 +1,50 @@
+# windows versions
+win_old:Windows NT 5.0
+win_old:Windows NT 4.
+win_old:WinNT4.0
+win_old:Windows 98
+win_old:Win98
+
+win_xp:Windows NT 5.1
+win_xp:Windows NT 5.2
+win_xp:Windows XP
+win_vista:Windows NT 6.0
+win_7:Windows NT 6.1
+win_8:Windows NT 6.2
+win_8:Windows NT 6.3
+win_10:Windows NT 6.4
+64bit:WOW64
+64bit:Win64
+arm:_arm_
+
+phone,win_7:Windows Phone OS 7.5
+phone,win_8:Windows Phone 8.
+phone:Windows Phone
+
+chrome,-safari:Chrome/
+safari:Safari/
+firefox:Firefox/
+
+maxthon,maxthon_cloud:Maxthon/4
+maxthon,-safari,-ie,-chrome:Maxthon/
+
+yabrowser,-chrome:YaBrowser/
+corom,-chrome:CoRom/
+corom,-chrome:coc_coc_browser
+
+opera:Opera/
+
+ie,ie_11,ie_latest:MSIE 11.
+ie,ie_11,ie_latest:Trident/7.0
+ie,ie_10:MSIE 10.
+ie:MSIE 9.
+ie,old_ie:MSIE 8.
+ie,old_ie:Internet Explorer 8.
+ie,old_ie:MSIE 7.
+ie,old_ie:MSIE 6.
+ie,old_ie:MSIE 5.
+ie,old_ie:MSIE 4.
+ie,ie_11,ie_latest,phone:IEMobile/11.0
+
+-safari,-chrome:IEMobile/11.0; NOKIA; Lumia
+

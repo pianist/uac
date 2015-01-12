@@ -1,0 +1,35 @@
+# base classification
+
+g_android,-g_unix:Android
+-g_android:Mobile; Windows Phone
+-g_android:like Android
+
+g_apple:iPad
+g_apple:iPhone
+g_apple:iPod
+g_apple:Macintosh
+g_apple:Mac OS X
+-g_apple:NaviPad
+-g_apple:Linux; U; Android
+
+g_windows,-g_apple,-g_android:NOKIA; Lumia
+g_windows,-g_apple,-g_android:Mobile; Windows Phone 8.1; Android 4.0; ARM; Trident/7.0
+-g_windows:MIDP-2.
+g_windows:Windows NT
+g_windows:Windows XP
+g_windows:Windows Phone
+g_windows:Windows Mobile
+g_windows:Windows 98
+g_windows:WinNT4.0
+g_windows:WinNT4.0
+g_windows:Windows 98
+g_windows:Win98
+
+g_unix,-g_apple:X11
+g_unix:ubuntu
+g_unix:Fedora/
+g_unix:OpenBSD
+g_unix:FreeBSD
+g_unix:NetBSD
+g_unix:Linux
+

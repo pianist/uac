@@ -1,0 +1,53 @@
+# OS and versions
+android:Android
+android_5:Android 5.
+android_5_0:Android 5.0
+android_5_1:Android 5.1
+android_4:Android 4.
+android_4_4:Android 4.4
+android_4_3:Android 4.3
+android_4_2:Android 4.2
+android_4_1:Android 4.1
+android_4_0:Android 4.0
+android_3:Android 3.
+android_2:Android 2.
+android_2_3:Android 2.3
+
+# Android phone or tablet
+phone,-tablet:Mobile Safari/
+tablet:Safari/
+
+phone:Opera Mobi/
+tablet:Opera Tablet/
+phone,tablet:Opera Mini/
+phone:Android; Mobile;
+tablet:Android; Tablet;
+
+tablet:Nexus 10_
+tablet:Nexus 9_
+tablet:Nexus 7_
+phone:Nexus 5_
+phone:Nexus 4_
+
+# Browser
+yabrowser:YaBrowser/
+-chrome:YaBrowser/
+chrome:Chrome/
+-safari:Chrome/
+firefox:Firefox/
+
+# brand (manufactor)
+nexus:Nexus
+
+samsung:SAMSUNG 
+samsung:GT-I9
+samsung:GT-I8
+samsung:GT-I5
+samsung:GT-N
+samsung:GT-S
+samsung:GT-P
+
+huawei:HUAWEI
+htc:HTC
+lenovo:Lenovo
+

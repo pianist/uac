@@ -1,0 +1,16 @@
+
+tablet,ipad,-iphone:iPad
+phone,iphone:iPhone
+ipod,-iphone:iPod
+mac:Macintosh
+
+chrome,-safari:Chrome/
+safari:Safari/
+firefox:Firefox/
+
+yabrowser,-chrome,-safari:YaBrowser/
+opera:Opera/
+
+maxthon,maxthon_cloud:Maxthon/4
+maxthon,-safari,-ie,-chrome:Maxthon/
+

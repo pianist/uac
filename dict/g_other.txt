@@ -1,0 +1,17 @@
+
+phone:MIDP-2.
+phone:Mobile Safari/
+phone:Opera Mini/
+opera:Opera/
+
+blackberry,phone:BlackBerry
+blackberry,phone:BB10
+
+symbian:Symbian
+
+nokia:S40OviBrowser/
+nokia:NokiaBrowser/
+nokia:BrowserNG/
+
+samsung:samsung
+
