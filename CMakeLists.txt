@@ -61,5 +61,21 @@ ADD_CUSTOM_COMMAND (TARGET uacc POST_BUILD COMMAND ./uacc g_unix.automaton ${CMA
 ADD_EXECUTABLE (uac_detect src/uac_detect.c)
 TARGET_LINK_LIBRARIES (uac_detect uac)
 
-
+INSTALL (FILES src/uac.h DESTINATION include/uac)
+INSTALL (TARGETS uac DESTINATION ${LIBDIR})
+INSTALL (TARGETS uac_detect uacc DESTINATION bin)
+INSTALL (FILES
+	dict/base.txt
+	dict/g_other.txt
+	dict/g_android.txt
+	dict/g_windows.txt
+	dict/g_apple.txt
+	dict/g_unix.txt
+	${CMAKE_CURRENT_BINARY_DIR}/base.automaton
+	${CMAKE_CURRENT_BINARY_DIR}/g_other.automaton
+	${CMAKE_CURRENT_BINARY_DIR}/g_android.automaton
+	${CMAKE_CURRENT_BINARY_DIR}/g_windows.automaton
+	${CMAKE_CURRENT_BINARY_DIR}/g_apple.automaton
+	${CMAKE_CURRENT_BINARY_DIR}/g_unix.automaton
+	DESTINATION share/uac)
 
