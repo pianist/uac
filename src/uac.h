@@ -44,6 +44,7 @@ extern "C" {
 /* android_5 == all Android 5.x versions (API 21 ...) */
 #define UAC_FLAG_android_5		17
 #define UAC_FLAG_android_api_21		18
+#define UAC_MASK_android_version	(((uint64_t)1 << UAC_FLAG_android_old) + ((uint64_t)1 << UAC_FLAG_android_2_3_x) + ((uint64_t)1 << UAC_FLAG_android_3_x) + ((uint64_t)1 << UAC_FLAG_android_4) + ((uint64_t)1 << UAC_FLAG_android_api_16) + ((uint64_t)1 << UAC_FLAG_android_api_17) + ((uint64_t)1 << UAC_FLAG_android_api_18) + ((uint64_t)1 << UAC_FLAG_android_api_19) + ((uint64_t)1 << UAC_FLAG_android_api_20) + ((uint64_t)1 << UAC_FLAG_android_5) + ((uint64_t)1 << UAC_FLAG_android_api_21))
 
 
 /* windows versions */
@@ -115,7 +116,6 @@ struct uac_result_s
 	uint32_t group_id;
 	uint64_t flags;
 };
-
 typedef struct uac_result_s uac_result_t;
 
 int uac_classify(uac_result_t* ret, const char* s);
@@ -123,18 +123,17 @@ int uac_classifyi_binary(uac_result_t* ret, const char* s, size_t sz);
 
 void uac_hr_cl_result(uac_result_t* ret, char* buf, size_t sz);
 
+/* flags info */
 
-/* ----------------------------------- */
-
-struct uac_std_flag_title_s
+struct uac_flag_info_s
 {
 	uint32_t flag_id;
 	const char* title;
 	uint64_t groups;
 };
 
-typedef struct uac_std_flag_title_s uac_std_flag_title_t;
-extern uac_std_flag_title_t uac_std_flags[];
+typedef struct uac_flag_info_s uac_flag_info_t;
+extern uac_flag_info_t uac_flag_info[];
 
 #ifdef __cplusplus
 }

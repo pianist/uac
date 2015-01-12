@@ -15,7 +15,7 @@
 #define UAC_GROUP_MASK_apple	((uint64_t)1 << UAC_GROUP_apple)
 #define UAC_GROUP_MASK_unix	((uint64_t)1 << UAC_GROUP_unix)
 
-uac_std_flag_title_t uac_std_flags[] = {
+uac_flag_info_t uac_flag_info[] = {
 	UAC_DEFINE_GROUP(other)
 	UAC_DEFINE_GROUP(android)
 	UAC_DEFINE_GROUP(apple)
@@ -125,13 +125,13 @@ int uac_init(const char *dict_dir, char* err_buf, unsigned err_buf_sz)
 	}
 
 	int i;
-	for (i = 0; uac_std_flags[i].title; ++i)
+	for (i = 0; uac_flag_info[i].title; ++i)
 	{
-		if (uac_std_flags[i].groups) continue;
+		if (uac_flag_info[i].groups) continue;
 
-		snprintf(fname, 1024, "%s/%s.automaton", dict_dir, uac_std_flags[i].title);
+		snprintf(fname, 1024, "%s/%s.automaton", dict_dir, uac_flag_info[i].title);
 
-		unsigned group_id = uac_std_flags[i].flag_id;
+		unsigned group_id = uac_flag_info[i].flag_id;
 		uac_ma[group_id] = MAFSA_automaton_load_from_binary_file(fname, 0);
 
 		if (0)//!uac_ma[group_id])
@@ -268,19 +268,19 @@ static void uac_bit_text_init()
 	int i;
 	int j;
 
-	for (i = 0; uac_std_flags[i].title; ++i)
+	for (i = 0; uac_flag_info[i].title; ++i)
 	{
-		if (!uac_std_flags[i].groups)
+		if (!uac_flag_info[i].groups)
 		{
-			uac_group_titles[uac_std_flags[i].flag_id] = uac_std_flags[i].title;
+			uac_group_titles[uac_flag_info[i].flag_id] = uac_flag_info[i].title;
 		}
 		else
 		{
 			for (j = 0; j < UAC_GROUP_COUNT; ++j)
 			{
-				if ((uac_std_flags[i].groups & ((uint64_t)1 << j)))
+				if ((uac_flag_info[i].groups & ((uint64_t)1 << j)))
 				{
-					uac_bit_texts[j][uac_std_flags[i].flag_id] = uac_std_flags[i].title;
+					uac_bit_texts[j][uac_flag_info[i].flag_id] = uac_flag_info[i].title;
 				}
 			}
 		}

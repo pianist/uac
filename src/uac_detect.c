@@ -27,11 +27,8 @@ int main(int argc, char **argv)
 		char* nlrl = strpbrk(buf, "\r\n");
 		if (nlrl) *nlrl = 0;
 
-//		printf("IN: %s\n", buf);
-
 		uac_result_t ret;
 		uac_classify(&ret, buf);		
-continue;
 
 		char buf_res[1024];
 		uac_hr_cl_result(&ret, buf_res, 1024);

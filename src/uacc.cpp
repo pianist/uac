@@ -112,10 +112,10 @@ printf("UAC_MASK_mobile: %08lX\n", UAC_MASK_apple);
 printf("UAC_TXT_mobile: %s\n", UAC_TXT_apple);
 #endif
 
-	for (int i = 0; uac_std_flags[i].title; ++i)
+	for (int i = 0; uac_flag_info[i].title; ++i)
 	{
-		//printf("%u\t%s\n", uac_std_flags[i].flag, uac_std_flags[i].title);
-		flag_title_rev[uac_std_flags[i].title] = uac_std_flags[i].flag_id;
+		//printf("%u\t%s\n", uac_flag_info[i].flag, uac_flag_info[i].title);
+		flag_title_rev[uac_flag_info[i].title] = uac_flag_info[i].flag_id;
 	}
 
         if (argc < 3)
