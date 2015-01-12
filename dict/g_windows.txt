@@ -48,3 +48,7 @@ ie,ie_11,ie_latest,phone:IEMobile/11.0
 
 -safari,-chrome:IEMobile/11.0; NOKIA; Lumia
 
+htc:HTC
+lenovo:Lenovo
+nokia:Nokia
+

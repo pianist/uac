@@ -31,21 +31,19 @@ extern "C" {
 /* UAC_FLAG_android == API version detected */
 #define UAC_FLAG_android		7
 /* android_less_4 == all versions before Android 4.0 (API 1 ... 13) */
-#define UAC_FLAG_android_less_4		8
-#define UAC_FLAG_android_3_x		16
-#define UAC_FLAG_android_2_3_x		17
+#define UAC_FLAG_android_old		8
+#define UAC_FLAG_android_2_3_x		9
+#define UAC_FLAG_android_3_x		10
 /* android_4 == all Android 4.x versions (API 14 ... 20) */
-#define UAC_FLAG_android_4		9
-#define UAC_FLAG_android_api_14		16
-#define UAC_FLAG_android_api_15		17
-#define UAC_FLAG_android_api_16		18
-#define UAC_FLAG_android_api_17		19
-#define UAC_FLAG_android_api_18		20
-#define UAC_FLAG_android_api_19		21
-#define UAC_FLAG_android_api_20		22
+#define UAC_FLAG_android_4		11
+#define UAC_FLAG_android_api_16		12
+#define UAC_FLAG_android_api_17		13
+#define UAC_FLAG_android_api_18		14
+#define UAC_FLAG_android_api_19		15
+#define UAC_FLAG_android_api_20		16
 /* android_5 == all Android 5.x versions (API 21 ...) */
-#define UAC_FLAG_android_5		10
-#define UAC_FLAG_android_api_21		16
+#define UAC_FLAG_android_5		17
+#define UAC_FLAG_android_api_21		18
 
 
 /* windows versions */

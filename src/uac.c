@@ -6,83 +6,89 @@
 #include <MAFSA/automaton.h>
 
 #define UAC_DEFINE_GROUP(name) { UAC_GROUP_ ## name, "g_" # name, 0 },
-#define UAC_DEFINE_FLAG(name) { UAC_FLAG_ ## name, # name, 1 },
+#define UAC_DEFINE_FLAG(name,_groups) { UAC_FLAG_ ## name, # name, _groups },
+
+#define UAC_GROUP_MASK_ANY	((uint64_t)0xFFFFFFFFFFFFFFFF)
+#define UAC_GROUP_MASK_other	((uint64_t)1 << UAC_GROUP_other)
+#define UAC_GROUP_MASK_android	((uint64_t)1 << UAC_GROUP_android)
+#define UAC_GROUP_MASK_windows	((uint64_t)1 << UAC_GROUP_windows)
+#define UAC_GROUP_MASK_apple	((uint64_t)1 << UAC_GROUP_apple)
+#define UAC_GROUP_MASK_unix	((uint64_t)1 << UAC_GROUP_unix)
 
 uac_std_flag_title_t uac_std_flags[] = {
+	UAC_DEFINE_GROUP(other)
 	UAC_DEFINE_GROUP(android)
 	UAC_DEFINE_GROUP(apple)
 	UAC_DEFINE_GROUP(windows)
 	UAC_DEFINE_GROUP(unix)
 
-	UAC_DEFINE_FLAG(phone)
-	UAC_DEFINE_FLAG(tablet)
-	UAC_DEFINE_FLAG(tv)
+	UAC_DEFINE_FLAG(phone,	UAC_GROUP_MASK_ANY)
+	UAC_DEFINE_FLAG(tablet,	UAC_GROUP_MASK_ANY)
+	UAC_DEFINE_FLAG(tv,	UAC_GROUP_MASK_ANY)
 
-	UAC_DEFINE_FLAG(64bit)
-	UAC_DEFINE_FLAG(arm)
+	UAC_DEFINE_FLAG(64bit,	UAC_GROUP_MASK_ANY)
+	UAC_DEFINE_FLAG(arm,	UAC_GROUP_MASK_ANY)
 
-	UAC_DEFINE_FLAG(android)
-	UAC_DEFINE_FLAG(android_less_4)
-	UAC_DEFINE_FLAG(android_3_x)
-	UAC_DEFINE_FLAG(android_2_3_x)
-	UAC_DEFINE_FLAG(android_4)
-	UAC_DEFINE_FLAG(android_api_14)
-	UAC_DEFINE_FLAG(android_api_15)
-	UAC_DEFINE_FLAG(android_api_16)
-	UAC_DEFINE_FLAG(android_api_17)
-	UAC_DEFINE_FLAG(android_api_18)
-	UAC_DEFINE_FLAG(android_api_19)
-	UAC_DEFINE_FLAG(android_api_20)
-	UAC_DEFINE_FLAG(android_5)
-	UAC_DEFINE_FLAG(android_api_21)
+	UAC_DEFINE_FLAG(android,	UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(android_old,	UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(android_2_3_x,	UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(android_3_x,	UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(android_4,	UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(android_api_16,	UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(android_api_17,	UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(android_api_18,	UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(android_api_19,	UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(android_api_20,	UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(android_5,	UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(android_api_21,	UAC_GROUP_MASK_android)
 
-	UAC_DEFINE_FLAG(linux)
-	UAC_DEFINE_FLAG(bsd)
-	UAC_DEFINE_FLAG(cros)
+	UAC_DEFINE_FLAG(linux,	UAC_GROUP_MASK_unix)
+	UAC_DEFINE_FLAG(bsd,	UAC_GROUP_MASK_unix)
+	UAC_DEFINE_FLAG(cros,	UAC_GROUP_MASK_unix)
 
-	UAC_DEFINE_FLAG(debian)
-	UAC_DEFINE_FLAG(ubuntu)
-	UAC_DEFINE_FLAG(gentoo)
+	UAC_DEFINE_FLAG(debian,	UAC_GROUP_MASK_unix)
+	UAC_DEFINE_FLAG(ubuntu,	UAC_GROUP_MASK_unix)
+	UAC_DEFINE_FLAG(gentoo,	UAC_GROUP_MASK_unix)
 
-	UAC_DEFINE_FLAG(ipod)
-	UAC_DEFINE_FLAG(iphone)
-	UAC_DEFINE_FLAG(ipad)
-	UAC_DEFINE_FLAG(mac)
+	UAC_DEFINE_FLAG(ipod,	UAC_GROUP_MASK_apple)
+	UAC_DEFINE_FLAG(iphone,	UAC_GROUP_MASK_apple)
+	UAC_DEFINE_FLAG(ipad,	UAC_GROUP_MASK_apple)
+	UAC_DEFINE_FLAG(mac,	UAC_GROUP_MASK_apple)
 
-	UAC_DEFINE_FLAG(win_old)
-	UAC_DEFINE_FLAG(win_xp)
-	UAC_DEFINE_FLAG(win_vista)
-	UAC_DEFINE_FLAG(win_7)
-	UAC_DEFINE_FLAG(win_8)
-	UAC_DEFINE_FLAG(win_10)
+	UAC_DEFINE_FLAG(win_old,	UAC_GROUP_MASK_windows)
+	UAC_DEFINE_FLAG(win_xp,		UAC_GROUP_MASK_windows)
+	UAC_DEFINE_FLAG(win_vista,	UAC_GROUP_MASK_windows)
+	UAC_DEFINE_FLAG(win_7,		UAC_GROUP_MASK_windows)
+	UAC_DEFINE_FLAG(win_8,		UAC_GROUP_MASK_windows)
+	UAC_DEFINE_FLAG(win_10,		UAC_GROUP_MASK_windows)
 
-	UAC_DEFINE_FLAG(symbian)
-	UAC_DEFINE_FLAG(nokia)
-	UAC_DEFINE_FLAG(blackberry)
-	UAC_DEFINE_FLAG(samsung)
-	UAC_DEFINE_FLAG(nexus)
-	UAC_DEFINE_FLAG(huawei)
-	UAC_DEFINE_FLAG(htc)
-	UAC_DEFINE_FLAG(lenovo)
+	UAC_DEFINE_FLAG(symbian,	UAC_GROUP_MASK_other)
+	UAC_DEFINE_FLAG(nokia,		UAC_GROUP_MASK_other + UAC_GROUP_MASK_windows)
+	UAC_DEFINE_FLAG(blackberry,	UAC_GROUP_MASK_other)
+	UAC_DEFINE_FLAG(samsung,	UAC_GROUP_MASK_other + UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(nexus,		UAC_GROUP_MASK_other + UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(huawei,		UAC_GROUP_MASK_other + UAC_GROUP_MASK_android)
+	UAC_DEFINE_FLAG(htc,		UAC_GROUP_MASK_other + UAC_GROUP_MASK_android + UAC_GROUP_MASK_windows)
+	UAC_DEFINE_FLAG(lenovo,		UAC_GROUP_MASK_other + UAC_GROUP_MASK_android + UAC_GROUP_MASK_windows)
 
-	UAC_DEFINE_FLAG(chrome)
-	UAC_DEFINE_FLAG(firefox)
-	UAC_DEFINE_FLAG(safari)
-	UAC_DEFINE_FLAG(ie)
-	UAC_DEFINE_FLAG(gnome)
-	UAC_DEFINE_FLAG(opera)
-	UAC_DEFINE_FLAG(yabrowser)
-	UAC_DEFINE_FLAG(corom)
-	UAC_DEFINE_FLAG(maxthon)
-	UAC_DEFINE_FLAG(konqueror)
-	UAC_DEFINE_FLAG(links)
+	UAC_DEFINE_FLAG(chrome,		UAC_GROUP_MASK_ANY)
+	UAC_DEFINE_FLAG(firefox,	UAC_GROUP_MASK_ANY)
+	UAC_DEFINE_FLAG(safari,		UAC_GROUP_MASK_ANY)
+	UAC_DEFINE_FLAG(ie,		UAC_GROUP_MASK_windows)
+	UAC_DEFINE_FLAG(gnome,		UAC_GROUP_MASK_other + UAC_GROUP_MASK_unix)
+	UAC_DEFINE_FLAG(opera,		UAC_GROUP_MASK_ANY)
+	UAC_DEFINE_FLAG(yabrowser,	UAC_GROUP_MASK_ANY)
+	UAC_DEFINE_FLAG(corom,		UAC_GROUP_MASK_ANY)
+	UAC_DEFINE_FLAG(maxthon,	UAC_GROUP_MASK_ANY)
+	UAC_DEFINE_FLAG(konqueror,	UAC_GROUP_MASK_other + UAC_GROUP_MASK_unix)
+	UAC_DEFINE_FLAG(links,		UAC_GROUP_MASK_other + UAC_GROUP_MASK_unix)
 
-	UAC_DEFINE_FLAG(ie_old)
-	UAC_DEFINE_FLAG(ie_latest)
-	UAC_DEFINE_FLAG(ie_11)
-	UAC_DEFINE_FLAG(ie_10)
+	UAC_DEFINE_FLAG(ie_old,		UAC_GROUP_MASK_windows)
+	UAC_DEFINE_FLAG(ie_latest,	UAC_GROUP_MASK_windows)
+	UAC_DEFINE_FLAG(ie_11,		UAC_GROUP_MASK_windows)
+	UAC_DEFINE_FLAG(ie_10,		UAC_GROUP_MASK_windows)
 
-	UAC_DEFINE_FLAG(maxthon_cloud)
+	UAC_DEFINE_FLAG(maxthon_cloud,	UAC_GROUP_MASK_ANY)
 	{ 0, NULL, 0 }
 };
 
@@ -249,8 +255,79 @@ int uac_classifyi_binary(uac_result_t* ret, const char* s, size_t sz)
 	return uac_do_classify(ret, l, ssz);
 }
 
+static int uac_bit_text_initiated = 0;
+
+#define UAC_GROUP_COUNT			(UAC_GROUP_unix + 1)
+#define UAC_FLAG_BITS_COUNT		64
+#define UAC_MAX_FLAG_TITLE_STRLEN	32
+static const char* uac_bit_texts[UAC_GROUP_COUNT][UAC_FLAG_BITS_COUNT] = { { 0 } };
+static const char* uac_group_titles[UAC_GROUP_COUNT] = { 0 };
+
+static void uac_bit_text_init()
+{
+	int i;
+	int j;
+
+	for (i = 0; uac_std_flags[i].title; ++i)
+	{
+		if (!uac_std_flags[i].groups)
+		{
+			uac_group_titles[uac_std_flags[i].flag_id] = uac_std_flags[i].title;
+		}
+		else
+		{
+			for (j = 0; j < UAC_GROUP_COUNT; ++j)
+			{
+				if ((uac_std_flags[i].groups & ((uint64_t)1 << j)))
+				{
+					uac_bit_texts[j][uac_std_flags[i].flag_id] = uac_std_flags[i].title;
+				}
+			}
+		}
+	}
+
+	uac_bit_text_initiated = 1;
+}
+
+#define WRITE_STR(_s) \
+{ \
+	*ptr = 0; \
+	if (_s) \
+	{ \
+		if (strlen(_s) + 1 > (sz - (ptr - buf))) return; \
+		ptr = stpcpy(ptr,_s); \
+	} \
+}
+
 void uac_hr_cl_result(uac_result_t* ret, char* buf, size_t sz)
 {
+	if (!uac_bit_text_initiated)
+	{
+		uac_bit_text_init();
+	}
 
+	if (!sz) return;
+
+	char* ptr = buf;
+	if (ret->group_id >= UAC_GROUP_COUNT)
+	{
+		WRITE_STR("unknown");
+		return;
+	}
+	WRITE_STR(uac_group_titles[ret->group_id]);
+	WRITE_STR(":");
+
+	int ft = 1;
+	int i;
+	for (i = 0; i < UAC_FLAG_BITS_COUNT; ++i)
+	{
+		if ((ret->flags & ((uint64_t)1 << i)))
+		{
+			if (!ft) WRITE_STR(",");
+			ft = 0;
+
+			WRITE_STR(uac_bit_texts[ret->group_id][i]);
+		}
+	}
 }
 

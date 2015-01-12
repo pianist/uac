@@ -31,23 +31,12 @@ int main(int argc, char **argv)
 
 		uac_result_t ret;
 		uac_classify(&ret, buf);		
+continue;
 
-		switch (ret.group_id)
-		{
+		char buf_res[1024];
+		uac_hr_cl_result(&ret, buf_res, 1024);
 
-			case UAC_GROUP_windows:
-				printf("G-%u\twin=%016" PRIX64 "\tbr=%016" PRIX64 "\tfull=%016" PRIX64 "\t%s\n"
-					, ret.group_id
-					, ret.flags & UAC_MASK_win_os_ver
-					, ret.flags & UAC_MASK_browsers
-					, ret.flags
-					, buf);
-				break;
-
-			default:
-				printf("G-%u\t%016" PRIX64 "\t%s\n", ret.group_id, ret.flags, buf);
-				break;
-		}
+		printf("G-%u\t%016" PRIX64 "\t%s\t%s\n", ret.group_id, ret.flags, buf_res, buf);
 	}
 
 

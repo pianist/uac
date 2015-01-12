@@ -1,13 +1,10 @@
 # OS and versions
-android,android_less_4:Android 1.
-android,android_less_4:Android 2.
+android,android_old:Android 1.
+android,android_old:Android 2.
 android_2_3_x:Android 2.3
-android,android_less_4,android_3_x:Android 3.
+android,android_old,android_3_x:Android 3.
 
 android,android_4:Android 4.
-android_api_14:Android 4.0.
-android_api_15,-android_api_14:Android 4.0.3
-android_api_15,-android_api_14:Android 4.0.4
 android_api_16:Android 4.1
 android_api_17:Android 4.2
 android_api_18:Android 4.3
