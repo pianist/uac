@@ -27,7 +27,7 @@ void process_input_file(dict_compiler_t& dc, const char* fname)
 	while (!feof(f))
 	{
 		char buf[1024];
-		fgets(buf, 1024, f);
+		if (!fgets(buf, 1024, f)) break;
 
 		if ('#' == buf[0]) continue;
 

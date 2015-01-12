@@ -7,44 +7,54 @@
 #include "sla.h"
 #include <string.h>
 
+static int sla_convert_array_initiated = 0;
+static MAFSA_letter sla_convert_array[256] = { 0 };
+
+static void sla_convert_array_init()
+{
+	int i;
+	memset(sla_convert_array, 10, 256);
+
+	for (i = 0; i <= 9; ++i)
+	{
+		sla_convert_array['0' + i] = i;
+	}
+
+	sla_convert_array['-'] = 11;
+	sla_convert_array['|'] = MAX_LETTER_SLA;
+
+	for (i = 0; i < 26; ++i)
+	{
+		sla_convert_array['a' + i] = i + 12;
+		sla_convert_array['A' + i] = i + 12;
+	}
+
+	sla_convert_array_initiated = 1;
+}
+
 ssize_t conv_s2l_sla(const char *s, MAFSA_letter *l, size_t sz)
 {
+	if (!sla_convert_array_initiated)
+	{
+		sla_convert_array_init();
+	}
+
 	ssize_t pos = 0;
 	const char *i = s;
 	while (*i && (*i != '\n') && (pos < sz))
 	{
-		if (i[0] >= '0' && i[0] <= '9')
+		MAFSA_letter _n = sla_convert_array[(unsigned char)*i++];
+
+		if (255 == _n) continue;
+
+		if ((10 == _n) && pos)
 		{
-			l[pos++] = i[0] - '0';
-			i++;
+			if (10 == l[pos-1]) continue;
 		}
-		else if (strchr(" \t_@./+\\\"'=%$#@!?(){}[]", i[0]))
-		{
-			if (pos && (l[pos-1] != 10) && (l[pos-1] != 11)) l[pos++] = 10; /* '_' */
-			i++;
-		}
-		else if ('-' == i[0])
-		{
-			if (!pos || ((l[pos-1] != 10) && (l[pos-1] != 11))) l[pos++] = 11; /* '-' */
-			i++;
-		}
-		else if (i[0] >= 'a' && i[0] <= 'z')
-		{
-			l[pos++] = i[0] - 'a' + 12;
-			i++;
-		}
-		else if (i[0] >= 'A' && i[0] <= 'Z')
-		{
-			l[pos++] = i[0] - 'A' + 12;
-			i++;
-		}
-		else if (i[0] == '|')
-		{
-			l[pos++] = MAX_LETTER_SLA;
-			i++;
-		}
-		else i++;
+
+		l[pos++] = _n;
 	}
+
 	return pos;
 }
 
