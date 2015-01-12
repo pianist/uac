@@ -13,7 +13,7 @@ typedef MAFSA::daciuk<MAX_LETTER_SLA + 1> dict_compiler_t;
 
 uac_std_flag_title_rev_t flag_title_rev;
 
-void process_input_file(dict_compiler_t& dc, const char* fname)
+void process_input_file(dict_compiler_t& dc, const char* fname, int param_no)
 {
 	FILE* f = fopen(fname, "r");
 
@@ -60,6 +60,19 @@ void process_input_file(dict_compiler_t& dc, const char* fname)
 #ifdef _DEBUG
 ssize_t save_len = len;
 #endif
+				/* write dictionary id if not group_id */
+				if (param_no >= 0)
+				{
+					int _p = param_no;
+					do
+					{
+						l[len++] = _p % MAX_LETTER_SLA;
+						_p /= MAX_LETTER_SLA;
+					}
+					while (_p);
+				}
+
+				l[len++] = MAX_LETTER_SLA;
 
 				const char* to_search = tk;
 				if ('-' == *to_search) to_search++;
@@ -83,7 +96,8 @@ ssize_t save_len = len;
 
 				l[len++] = MAX_LETTER_SLA;
 
-				len += conv_s2l_sla(tk, l + len, 1024 - len);
+				if ('-' == *tk) l[len++] = LETTER_MINUS;
+
 				dc.insert(l, len);
 
 #ifdef _DEBUG
@@ -106,29 +120,30 @@ if (mul == 1) { printf("\tno id\n"); } else { printf("\tid %u\n", id); }
 
 int main(int argc, char **argv)
 {
-#ifdef _DEBUG
-printf("UAC_FLAG_mobile: %u\n", UAC_FLAG_apple);
-printf("UAC_MASK_mobile: %08lX\n", UAC_MASK_apple);
-printf("UAC_TXT_mobile: %s\n", UAC_TXT_apple);
-#endif
-
 	for (int i = 0; uac_flag_info[i].title; ++i)
 	{
-		//printf("%u\t%s\n", uac_flag_info[i].flag, uac_flag_info[i].title);
 		flag_title_rev[uac_flag_info[i].title] = uac_flag_info[i].flag_id;
 	}
 
-        if (argc < 3)
+        if (argc != 3)
         {
-                printf("usage: uacc output.automaton dict_file.txt\n");
+                printf("usage: uacc uac.automaton /path/to/dict/dir\n");
                 return -1;
         }
 
 	dict_compiler_t dc;
 
-	for (int i = 2; i < argc; ++i)
+	char fname[1024];
+	snprintf(fname, 1024, "%s/base.txt", argv[2]);
+	process_input_file(dc, fname, -1);
+
+	for (int i = 0; uac_flag_info[i].title; ++i)
 	{
-		process_input_file(dc, argv[i]);
+		if (!uac_flag_info[i].groups)
+		{
+			snprintf(fname, 1024, "%s/%s.txt", argv[2], uac_flag_info[i].title);
+			process_input_file(dc, fname, uac_flag_info[i].flag_id);
+		}
 	}
 
 	dc.save_to_file(argv[1]);

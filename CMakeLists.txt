@@ -51,12 +51,7 @@ TARGET_LINK_LIBRARIES (uac ${LIB_MAFSA})
 
 ADD_EXECUTABLE (uacc src/uacc.cpp)
 TARGET_LINK_LIBRARIES (uacc uac )
-ADD_CUSTOM_COMMAND (TARGET uacc POST_BUILD COMMAND ./uacc base.automaton ${CMAKE_CURRENT_SOURCE_DIR}/dict/base.txt)
-ADD_CUSTOM_COMMAND (TARGET uacc POST_BUILD COMMAND ./uacc g_other.automaton ${CMAKE_CURRENT_SOURCE_DIR}/dict/g_other.txt)
-ADD_CUSTOM_COMMAND (TARGET uacc POST_BUILD COMMAND ./uacc g_android.automaton ${CMAKE_CURRENT_SOURCE_DIR}/dict/g_android.txt)
-ADD_CUSTOM_COMMAND (TARGET uacc POST_BUILD COMMAND ./uacc g_windows.automaton ${CMAKE_CURRENT_SOURCE_DIR}/dict/g_windows.txt)
-ADD_CUSTOM_COMMAND (TARGET uacc POST_BUILD COMMAND ./uacc g_apple.automaton ${CMAKE_CURRENT_SOURCE_DIR}/dict/g_apple.txt)
-ADD_CUSTOM_COMMAND (TARGET uacc POST_BUILD COMMAND ./uacc g_unix.automaton ${CMAKE_CURRENT_SOURCE_DIR}/dict/g_unix.txt)
+ADD_CUSTOM_COMMAND (TARGET uacc POST_BUILD COMMAND ./uacc uac.automaton ${CMAKE_CURRENT_SOURCE_DIR}/dict)
 
 ADD_EXECUTABLE (uac_detect src/uac_detect.c)
 TARGET_LINK_LIBRARIES (uac_detect uac)
@@ -71,11 +66,6 @@ INSTALL (FILES
 	dict/g_windows.txt
 	dict/g_apple.txt
 	dict/g_unix.txt
-	${CMAKE_CURRENT_BINARY_DIR}/base.automaton
-	${CMAKE_CURRENT_BINARY_DIR}/g_other.automaton
-	${CMAKE_CURRENT_BINARY_DIR}/g_android.automaton
-	${CMAKE_CURRENT_BINARY_DIR}/g_windows.automaton
-	${CMAKE_CURRENT_BINARY_DIR}/g_apple.automaton
-	${CMAKE_CURRENT_BINARY_DIR}/g_unix.automaton
+	${CMAKE_CURRENT_BINARY_DIR}/uac.automaton
 	DESTINATION share/uac)
 

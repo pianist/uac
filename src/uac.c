@@ -92,7 +92,6 @@ uac_flag_info_t uac_flag_info[] = {
 	{ 0, NULL, 0 }
 };
 
-static MAFSA_automaton uac_ma[UAC_GROUP_MAX + 1] = { 0 };
 static MAFSA_automaton uac_ma_base = 0;
 
 inline static void fill_error(const char* fname, char* err_buf, unsigned err_buf_sz)
@@ -107,40 +106,13 @@ int uac_init(const char *dict_dir, char* err_buf, unsigned err_buf_sz)
 {
 	char fname[1024];
 
-	snprintf(fname, 1024, "%s/base.automaton", dict_dir);
+	snprintf(fname, 1024, "%s/uac.automaton", dict_dir);
 	uac_ma_base = MAFSA_automaton_load_from_binary_file(fname, 0);
 
 	if (!uac_ma_base)
 	{
 		fill_error(fname, err_buf, err_buf_sz);
 		return -1;
-	}
-
-	snprintf(fname, 1024, "%s/g_other.automaton", dict_dir);
-	uac_ma[UAC_GROUP_other] = MAFSA_automaton_load_from_binary_file(fname, 0);
-	if (0)//!uac_ma[UAC_GROUP_MAX])
-	{
-		fill_error(fname, err_buf, err_buf_sz);
-		return -1;
-	}
-
-	int i;
-	for (i = 0; uac_flag_info[i].title; ++i)
-	{
-		if (uac_flag_info[i].groups) continue;
-
-		snprintf(fname, 1024, "%s/%s.automaton", dict_dir, uac_flag_info[i].title);
-
-		unsigned group_id = uac_flag_info[i].flag_id;
-		uac_ma[group_id] = MAFSA_automaton_load_from_binary_file(fname, 0);
-
-		if (0)//!uac_ma[group_id])
-		{
-			fill_error(fname, err_buf, err_buf_sz);
-
-			uac_free();
-			return -1;
-		}
 	}
 
 	return 0;
@@ -155,8 +127,8 @@ void uac_free()
 
 struct uac_enum_working_s
 {
-	uint64_t flags_plus;
-	uint64_t flags_minus;
+	uint64_t flags_plus[UAC_GROUP_MAX + 1];
+	uint64_t flags_minus[UAC_GROUP_MAX + 1];
 };
 
 static void MAFSACALL uac_determine_callback(void* user_data, const MAFSA_letter* l, size_t sz)
@@ -179,21 +151,30 @@ static void MAFSACALL uac_determine_callback(void* user_data, const MAFSA_letter
 		mul *= MAX_LETTER_SLA;
 	}
 
-	if (MAX_LETTER_SLA != l[i++])
+	if (1 == mul) group_id = UAC_GROUP_MAX;
+
+	i++;
+	uint32_t flag_id = 0;
+	mul = 1;
+	while ((MAX_LETTER_SLA != l[i]) && (i < sz))
 	{
-		// no text string at the end? strange...
-		return;
+		flag_id += mul * l[i++];
+		mul *= MAX_LETTER_SLA;
 	}
 
+	/* this should not happen if automaton is correct */
+	if (group_id > UAC_GROUP_MAX) return;
+
+	i++;
 	if (1 != mul)
 	{
-		if (LETTER_MINUS == l[i])
+		if (i < sz)// LETTER_MINUS at the end
 		{
-			ws->flags_minus |= ((uint64_t)1 << group_id);
+			ws->flags_minus[group_id] |= ((uint64_t)1 << flag_id);
 		}
 		else
 		{
-			ws->flags_plus |= ((uint64_t)1 << group_id);
+			ws->flags_plus[group_id] |= ((uint64_t)1 << flag_id);
 		}
 	}
 }
@@ -207,7 +188,7 @@ static int uac_do_classify(uac_result_t* ret, const MAFSA_letter* l, ssize_t ssz
 
 	MAFSA_automaton_search_enumerate(uac_ma_base, l, ssz, tmp, MAX_MAFSA_LEN, &ws, MAX_LETTER_SLA, uac_determine_callback);
 
-	uint64_t base_flags = (ws.flags_plus & ~ws.flags_minus);
+	uint64_t base_flags = (ws.flags_plus[UAC_GROUP_MAX] & ~ws.flags_minus[UAC_GROUP_MAX]);
 
 	uint32_t group_id = 0;
 	uint64_t it_flag = 1;
@@ -222,14 +203,7 @@ static int uac_do_classify(uac_result_t* ret, const MAFSA_letter* l, ssize_t ssz
 	ret->group_id = group_id;
 	ret->flags = 0;
 
-	if (!uac_ma[group_id]) return -1;
-
-	struct uac_enum_working_s ws2;
-	memset(&ws2, 0, sizeof(struct uac_enum_working_s));
-
-	MAFSA_automaton_search_enumerate(uac_ma[group_id], l, ssz, tmp, MAX_MAFSA_LEN, &ws2, MAX_LETTER_SLA, uac_determine_callback);
-
-	uint64_t group_flags = (ws2.flags_plus & ~ws2.flags_minus);
+	uint64_t group_flags = (ws.flags_plus[group_id] & ~ws.flags_minus[group_id]);
 	ret->flags = group_flags;
 
 	return 0;
