@@ -1,17 +1,21 @@
 # OS and versions
-android:Android
-android_5:Android 5.
-android_5_0:Android 5.0
-android_5_1:Android 5.1
-android_4:Android 4.
-android_4_4:Android 4.4
-android_4_3:Android 4.3
-android_4_2:Android 4.2
-android_4_1:Android 4.1
-android_4_0:Android 4.0
-android_3:Android 3.
-android_2:Android 2.
-android_2_3:Android 2.3
+android,android_less_4:Android 1.
+android,android_less_4:Android 2.
+android_2_3_x:Android 2.3
+android,android_less_4,android_3_x:Android 3.
+
+android,android_4:Android 4.
+android_api_14:Android 4.0.
+android_api_15,-android_api_14:Android 4.0.3
+android_api_15,-android_api_14:Android 4.0.4
+android_api_16:Android 4.1
+android_api_17:Android 4.2
+android_api_18:Android 4.3
+android_api_19:Android 4.4
+android_api_20:Android 4.4w
+
+android,android_5:Android 5.
+android_api_21:Android 5.0
 
 # Android phone or tablet
 phone,-tablet:Mobile Safari/

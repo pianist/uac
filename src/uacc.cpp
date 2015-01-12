@@ -23,6 +23,7 @@ void process_input_file(dict_compiler_t& dc, const char* fname)
 		exit(-1);
 	}
 
+	unsigned line_no = 1;
 	while (!feof(f))
 	{
 		char buf[1024];
@@ -37,7 +38,11 @@ void process_input_file(dict_compiler_t& dc, const char* fname)
 		//while (strchr(delimiters, delim)) delim++;
 
 		char* nlrl = strpbrk(delim, "\r\n|");
-		if (nlrl) *nlrl = 0;
+		if (nlrl)
+		{
+			line_no++;
+			*nlrl = 0;
+		}
 
 		MAFSA_letter l[1024];
 		ssize_t ssz = conv_s2l_sla(delim, l, 1024);
@@ -69,6 +74,11 @@ ssize_t save_len = len;
 						id /= MAX_LETTER_SLA;
 					}
 					while (id);
+				}
+				else
+				{
+					fprintf(stderr, "Unknown flag '%s', at line %u in %s can't continue...\n", to_search, line_no, fname);
+					exit(-1);
 				}
 
 				l[len++] = MAX_LETTER_SLA;
@@ -105,7 +115,7 @@ printf("UAC_TXT_mobile: %s\n", UAC_TXT_apple);
 	for (int i = 0; uac_std_flags[i].title; ++i)
 	{
 		//printf("%u\t%s\n", uac_std_flags[i].flag, uac_std_flags[i].title);
-		flag_title_rev[uac_std_flags[i].title] = uac_std_flags[i].flag;
+		flag_title_rev[uac_std_flags[i].title] = uac_std_flags[i].flag_id;
 	}
 
         if (argc < 3)

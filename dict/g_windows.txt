@@ -38,12 +38,12 @@ ie,ie_11,ie_latest:MSIE 11.
 ie,ie_11,ie_latest:Trident/7.0
 ie,ie_10:MSIE 10.
 ie:MSIE 9.
-ie,old_ie:MSIE 8.
-ie,old_ie:Internet Explorer 8.
-ie,old_ie:MSIE 7.
-ie,old_ie:MSIE 6.
-ie,old_ie:MSIE 5.
-ie,old_ie:MSIE 4.
+ie,ie_old:MSIE 8.
+ie,ie_old:Internet Explorer 8.
+ie,ie_old:MSIE 7.
+ie,ie_old:MSIE 6.
+ie,ie_old:MSIE 5.
+ie,ie_old:MSIE 4.
 ie,ie_11,ie_latest,phone:IEMobile/11.0
 
 -safari,-chrome:IEMobile/11.0; NOKIA; Lumia

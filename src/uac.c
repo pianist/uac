@@ -5,65 +5,84 @@
 #include <stdio.h>
 #include <MAFSA/automaton.h>
 
-#define UAC_DEFINE_GROUP(name) { UAC_GROUP_ ## name, "g_" # name, 1 },
-#define UAC_DEFINE_FLAG(name) { UAC_FLAG_ ## name, # name, 0 },
+#define UAC_DEFINE_GROUP(name) { UAC_GROUP_ ## name, "g_" # name, 0 },
+#define UAC_DEFINE_FLAG(name) { UAC_FLAG_ ## name, # name, 1 },
 
 uac_std_flag_title_t uac_std_flags[] = {
-UAC_DEFINE_GROUP(android)
-UAC_DEFINE_GROUP(apple)
-UAC_DEFINE_GROUP(windows)
-UAC_DEFINE_GROUP(unix)
+	UAC_DEFINE_GROUP(android)
+	UAC_DEFINE_GROUP(apple)
+	UAC_DEFINE_GROUP(windows)
+	UAC_DEFINE_GROUP(unix)
 
-UAC_DEFINE_FLAG(phone)
-UAC_DEFINE_FLAG(tablet)
-UAC_DEFINE_FLAG(tv)
+	UAC_DEFINE_FLAG(phone)
+	UAC_DEFINE_FLAG(tablet)
+	UAC_DEFINE_FLAG(tv)
 
-UAC_DEFINE_FLAG(64bit)
-UAC_DEFINE_FLAG(arm)
+	UAC_DEFINE_FLAG(64bit)
+	UAC_DEFINE_FLAG(arm)
 
-UAC_DEFINE_FLAG(linux)
-UAC_DEFINE_FLAG(bsd)
-UAC_DEFINE_FLAG(cros)
+	UAC_DEFINE_FLAG(android)
+	UAC_DEFINE_FLAG(android_less_4)
+	UAC_DEFINE_FLAG(android_3_x)
+	UAC_DEFINE_FLAG(android_2_3_x)
+	UAC_DEFINE_FLAG(android_4)
+	UAC_DEFINE_FLAG(android_api_14)
+	UAC_DEFINE_FLAG(android_api_15)
+	UAC_DEFINE_FLAG(android_api_16)
+	UAC_DEFINE_FLAG(android_api_17)
+	UAC_DEFINE_FLAG(android_api_18)
+	UAC_DEFINE_FLAG(android_api_19)
+	UAC_DEFINE_FLAG(android_api_20)
+	UAC_DEFINE_FLAG(android_5)
+	UAC_DEFINE_FLAG(android_api_21)
 
-UAC_DEFINE_FLAG(debian)
-UAC_DEFINE_FLAG(ubuntu)
-UAC_DEFINE_FLAG(gentoo)
+	UAC_DEFINE_FLAG(linux)
+	UAC_DEFINE_FLAG(bsd)
+	UAC_DEFINE_FLAG(cros)
 
-UAC_DEFINE_FLAG(ipod)
-UAC_DEFINE_FLAG(iphone)
-UAC_DEFINE_FLAG(ipad)
-UAC_DEFINE_FLAG(mac)
+	UAC_DEFINE_FLAG(debian)
+	UAC_DEFINE_FLAG(ubuntu)
+	UAC_DEFINE_FLAG(gentoo)
 
-UAC_DEFINE_FLAG(win_old)
-UAC_DEFINE_FLAG(win_xp)
-UAC_DEFINE_FLAG(win_vista)
-UAC_DEFINE_FLAG(win_7)
-UAC_DEFINE_FLAG(win_8)
-UAC_DEFINE_FLAG(win_10)
+	UAC_DEFINE_FLAG(ipod)
+	UAC_DEFINE_FLAG(iphone)
+	UAC_DEFINE_FLAG(ipad)
+	UAC_DEFINE_FLAG(mac)
 
-UAC_DEFINE_FLAG(symbian)
-UAC_DEFINE_FLAG(nokia)
-UAC_DEFINE_FLAG(blackberry)
-UAC_DEFINE_FLAG(samsung)
+	UAC_DEFINE_FLAG(win_old)
+	UAC_DEFINE_FLAG(win_xp)
+	UAC_DEFINE_FLAG(win_vista)
+	UAC_DEFINE_FLAG(win_7)
+	UAC_DEFINE_FLAG(win_8)
+	UAC_DEFINE_FLAG(win_10)
 
-UAC_DEFINE_FLAG(chrome)
-UAC_DEFINE_FLAG(firefox)
-UAC_DEFINE_FLAG(safari)
-UAC_DEFINE_FLAG(ie)
-UAC_DEFINE_FLAG(gnome)
-UAC_DEFINE_FLAG(opera)
-UAC_DEFINE_FLAG(yabrowser)
-UAC_DEFINE_FLAG(corom)
-UAC_DEFINE_FLAG(maxthon)
-UAC_DEFINE_FLAG(konqueror)
-UAC_DEFINE_FLAG(links)
+	UAC_DEFINE_FLAG(symbian)
+	UAC_DEFINE_FLAG(nokia)
+	UAC_DEFINE_FLAG(blackberry)
+	UAC_DEFINE_FLAG(samsung)
+	UAC_DEFINE_FLAG(nexus)
+	UAC_DEFINE_FLAG(huawei)
+	UAC_DEFINE_FLAG(htc)
+	UAC_DEFINE_FLAG(lenovo)
 
-UAC_DEFINE_FLAG(ie_old)
-UAC_DEFINE_FLAG(ie_latest)
-UAC_DEFINE_FLAG(ie_11)
-UAC_DEFINE_FLAG(ie_10)
+	UAC_DEFINE_FLAG(chrome)
+	UAC_DEFINE_FLAG(firefox)
+	UAC_DEFINE_FLAG(safari)
+	UAC_DEFINE_FLAG(ie)
+	UAC_DEFINE_FLAG(gnome)
+	UAC_DEFINE_FLAG(opera)
+	UAC_DEFINE_FLAG(yabrowser)
+	UAC_DEFINE_FLAG(corom)
+	UAC_DEFINE_FLAG(maxthon)
+	UAC_DEFINE_FLAG(konqueror)
+	UAC_DEFINE_FLAG(links)
 
-UAC_DEFINE_FLAG(maxthon_cloud)
+	UAC_DEFINE_FLAG(ie_old)
+	UAC_DEFINE_FLAG(ie_latest)
+	UAC_DEFINE_FLAG(ie_11)
+	UAC_DEFINE_FLAG(ie_10)
+
+	UAC_DEFINE_FLAG(maxthon_cloud)
 	{ 0, NULL, 0 }
 };
 
@@ -102,11 +121,11 @@ int uac_init(const char *dict_dir, char* err_buf, unsigned err_buf_sz)
 	int i;
 	for (i = 0; uac_std_flags[i].title; ++i)
 	{
-		if(!uac_std_flags[i].is_group) continue;
+		if (uac_std_flags[i].groups) continue;
 
 		snprintf(fname, 1024, "%s/%s.automaton", dict_dir, uac_std_flags[i].title);
 
-		unsigned group_id = uac_std_flags[i].flag;
+		unsigned group_id = uac_std_flags[i].flag_id;
 		uac_ma[group_id] = MAFSA_automaton_load_from_binary_file(fname, 0);
 
 		if (0)//!uac_ma[group_id])
@@ -132,8 +151,6 @@ struct uac_enum_working_s
 {
 	uint64_t flags_plus;
 	uint64_t flags_minus;
-//???	char* txt_flags;
-//???	size_t txt_flags_pos;
 };
 
 static void MAFSACALL uac_determine_callback(void* user_data, const MAFSA_letter* l, size_t sz)

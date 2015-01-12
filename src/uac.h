@@ -27,6 +27,27 @@ extern "C" {
 #define UAC_FLAG_64bit		4
 #define UAC_FLAG_arm		5
 
+/* android API versions */
+/* UAC_FLAG_android == API version detected */
+#define UAC_FLAG_android		7
+/* android_less_4 == all versions before Android 4.0 (API 1 ... 13) */
+#define UAC_FLAG_android_less_4		8
+#define UAC_FLAG_android_3_x		16
+#define UAC_FLAG_android_2_3_x		17
+/* android_4 == all Android 4.x versions (API 14 ... 20) */
+#define UAC_FLAG_android_4		9
+#define UAC_FLAG_android_api_14		16
+#define UAC_FLAG_android_api_15		17
+#define UAC_FLAG_android_api_16		18
+#define UAC_FLAG_android_api_17		19
+#define UAC_FLAG_android_api_18		20
+#define UAC_FLAG_android_api_19		21
+#define UAC_FLAG_android_api_20		22
+/* android_5 == all Android 5.x versions (API 21 ...) */
+#define UAC_FLAG_android_5		10
+#define UAC_FLAG_android_api_21		16
+
+
 /* windows versions */
 #define UAC_FLAG_win_old	8
 #define UAC_FLAG_win_xp		9
@@ -52,11 +73,15 @@ extern "C" {
 #define UAC_FLAG_ipad		10
 #define UAC_FLAG_mac		11
 
-/* mobiles */
+/* mobiles (android and not) */
 #define UAC_FLAG_symbian	24
 #define UAC_FLAG_nokia		25
 #define UAC_FLAG_blackberry	26
 #define UAC_FLAG_samsung	27
+#define UAC_FLAG_nexus		28
+#define UAC_FLAG_huawei		29
+#define UAC_FLAG_htc		30
+#define UAC_FLAG_lenovo		31
 
 /* browsers */
 #define UAC_FLAG_chrome		40
@@ -87,12 +112,10 @@ extern "C" {
 int uac_init(const char *dict_dir, char* err_buf, unsigned err_buf_sz);
 void uac_free();
 
-//???#define MAX_UAC_RESULT_STRINGS 64
 struct uac_result_s
 {
 	uint32_t group_id;
 	uint64_t flags;
-//???	const char* txt_flags[MAX_UAC_RESULT_STRINGS];
 };
 
 typedef struct uac_result_s uac_result_t;
@@ -107,9 +130,9 @@ void uac_hr_cl_result(uac_result_t* ret, char* buf, size_t sz);
 
 struct uac_std_flag_title_s
 {
-	uint32_t flag;
+	uint32_t flag_id;
 	const char* title;
-	uint32_t is_group;
+	uint64_t groups;
 };
 
 typedef struct uac_std_flag_title_s uac_std_flag_title_t;
