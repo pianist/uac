@@ -1,0 +1,21 @@
+Source: uac
+Section: unknown
+Priority: extra
+Maintainer: Alexander Pankov <pianist@usrsrc.ru>
+Build-Depends: debhelper (>= 7.0.50~), cmake
+Standards-Version: 3.8.4
+Homepage: https://github.com/pianist/uac
+
+Package: uac
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: UAC compiler and shared data files
+ UAC is a library and tools for web User-Agent Classification.
+
+Package: uac-dev
+Section: libdevel
+Architecture: any
+Depends: uac ${shlibs:Depends}, ${misc:Depends}
+Description: UAC static lib and header files
+ UAC for developer
+

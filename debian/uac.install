@@ -1,0 +1,5 @@
+usr/bin/uacc
+usr/bin/uac_detect
+usr/share/uac/*.txt
+usr/share/uac/uac.automaton
+
