@@ -17,6 +17,38 @@ extern "C" {
 #define UAC_GROUP_unknown	64
 #define UAC_GROUP_MAX		UAC_GROUP_unknown
 
+/* Flags for groups
+
+   Other
+   DDD.DD.. ........ ........ MMMMMMMM ........ BBBBBBBB BB...... ....b...
+
+   Android
+   DDD.DD.A aaaaaaaa aa...... .M.MMMMM ........ BBB.BBBB ........ ....b...
+
+   Windows
+   DDD.DD.. wwwwww.. ........ ......MM ........ BBBBBBBB ........ bbbbb...
+
+   Apple
+   DDD.DD.. dddd.... ........ ........ ........ BBB.BBBB ........ b...b...
+   D: device type
+   d: device kind
+
+   Unix
+   DDD.DD.. SSS..... ddd..... ........ ........ BBBBBBBB BB...... ....b...
+
+   D: device type
+   A: set iff Android API version detected
+   S: system type
+   d: distro
+   a: Android version info bits
+   w: Windows version info bits
+   M: Manufactor, brand info bits
+   B: Browser type info bits
+   b: Browser versions info bits
+   .: unused
+
+*/
+
 /* common flags */
 #define UAC_FLAG_phone		0
 #define UAC_FLAG_tablet		1
@@ -45,7 +77,6 @@ extern "C" {
 #define UAC_FLAG_android_5		17
 #define UAC_FLAG_android_api_21		18
 #define UAC_MASK_android_version	(((uint64_t)1 << UAC_FLAG_android_old) + ((uint64_t)1 << UAC_FLAG_android_2_3_x) + ((uint64_t)1 << UAC_FLAG_android_3_x) + ((uint64_t)1 << UAC_FLAG_android_4) + ((uint64_t)1 << UAC_FLAG_android_api_16) + ((uint64_t)1 << UAC_FLAG_android_api_17) + ((uint64_t)1 << UAC_FLAG_android_api_18) + ((uint64_t)1 << UAC_FLAG_android_api_19) + ((uint64_t)1 << UAC_FLAG_android_api_20) + ((uint64_t)1 << UAC_FLAG_android_5) + ((uint64_t)1 << UAC_FLAG_android_api_21))
-
 
 /* windows versions */
 #define UAC_FLAG_win_old	8
@@ -104,7 +135,7 @@ extern "C" {
 #define UAC_FLAG_ie_10		59
 
 /* Maxthon browser flags */
-#define UAC_FLAG_maxthon_cloud	56
+#define UAC_FLAG_maxthon_cloud	60
 
 
 
